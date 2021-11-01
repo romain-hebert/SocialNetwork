@@ -26,7 +26,7 @@ public abstract class Sommet {
     }
 
     List<Sommet> getSuccessors() {
-        return successors.subList(0, successors.size() - 1);
+        return new ArrayList<Sommet>(successors);
     }
 
 }
