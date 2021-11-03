@@ -1,13 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import util.Contract;
 
 public abstract class Sommet {
 
-    protected List<Sommet> successors;
+    protected Set<Sommet> successors;
+    
+    private String name;
 
     /**
      * 
@@ -15,18 +17,23 @@ public abstract class Sommet {
      * 
      * @pre succ != null
      */
-    public Sommet(List<Sommet> succ) {
+    public Sommet(Set<Sommet> succ) {
         Contract.checkCondition(succ != null);
 
         successors = succ;
     }
 
     public Sommet() {
-        this(new ArrayList<Sommet>());
+        this(new HashSet<Sommet>());
     }
 
-    List<Sommet> getSuccessors() {
-        return new ArrayList<Sommet>(successors);
+    // REQUÊTES
+    
+    Set<Sommet> getSuccessors() {
+        return new HashSet<Sommet>(successors);
     }
-
+    
+    String getName() {
+        return name;
+    }
 }

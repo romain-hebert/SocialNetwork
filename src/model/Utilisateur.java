@@ -1,10 +1,10 @@
 package model;
 
-import java.util.List;
+import java.util.Set;
 
 public class Utilisateur extends Sommet {
     
-    public Utilisateur(List<Sommet> succ) {
+    public Utilisateur(Set<Sommet> succ) {
         super(succ);
     }
     
@@ -12,4 +12,13 @@ public class Utilisateur extends Sommet {
         super();
     }
     
+    // COMMANDES
+    
+    void addSuccessor(Sommet s) {
+        successors.add(s);
+    }
+    
+    void removeSuccessor(Sommet s) {
+        successors.remove(s);
+    }
 }

@@ -1,14 +1,22 @@
 package model;
 
-import java.util.List;
+import java.util.Set;
 
 public class Page extends Sommet {
     
-    public Page(List<Sommet> succ) {
+    private Utilisateur admin;
+    
+    public Page(Set<Sommet> succ, Utilisateur admin) {
         super(succ);
+        this.admin = admin;
     }
-    public Page() {
+    public Page(Utilisateur admin) {
         super();
     }
-
+    
+    // REQUÊTES
+    
+    public Utilisateur getAdmin() {
+        return admin;
+    }
 }
