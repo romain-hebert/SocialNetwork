@@ -105,15 +105,21 @@ public class Graphe {
     }
     
     public void addArc(Sommet s1, Sommet s2) {
-        if (sommets.contains(s1) && sommets.contains(s2) && s1 instanceof Utilisateur) {
+        if (sommets.contains(s1) && sommets.contains(s2) 
+                && s1 instanceof Utilisateur) {
             ((Utilisateur) s1).addSuccessor(s2);
         }
     }
     
     public void removeArc(Sommet s1, Sommet s2) {
         if (s1.getSuccessors().contains(s2)) {
-            // Il est safe de caster car s1 ne peut être qu'un utilisateur si il a s2 comme successeur.
+            // s1 a s2 comme successeur, il est donc un Utilisateur.
             ((Utilisateur) s1).removeSuccessor(s2);
         }
+    }
+    
+    public Sommet getNodeFromName() {
+        
+        return null;
     }
 }

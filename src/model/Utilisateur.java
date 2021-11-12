@@ -4,12 +4,16 @@ import java.util.Set;
 
 public class Utilisateur extends Sommet {
     
-    public Utilisateur(Set<Sommet> succ) {
+    private int age;
+    
+    public Utilisateur(Set<Sommet> succ, int age) {
         super(succ);
+        this.age = age;
     }
     
-    public Utilisateur() {
+    public Utilisateur(int age) {
         super();
+        this.age = age;
     }
     
     // COMMANDES
