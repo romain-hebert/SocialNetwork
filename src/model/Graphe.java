@@ -117,9 +117,4 @@ public class Graphe {
             ((Utilisateur) s1).removeSuccessor(s2);
         }
     }
-    
-    public Sommet getNodeFromName() {
-        
-        return null;
-    }
 }

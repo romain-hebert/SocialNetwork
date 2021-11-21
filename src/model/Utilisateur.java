@@ -16,13 +16,19 @@ public class Utilisateur extends Sommet {
         this.age = age;
     }
     
+    // REQUETES
+    
+    public int getAge() {
+        return age;
+    }
+    
     // COMMANDES
     
-    void addSuccessor(Sommet s) {
+    public void addSuccessor(Sommet s) {
         successors.add(s);
     }
     
-    void removeSuccessor(Sommet s) {
+    public void removeSuccessor(Sommet s) {
         successors.remove(s);
     }
 }

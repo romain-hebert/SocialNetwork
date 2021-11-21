@@ -29,11 +29,11 @@ public abstract class Sommet {
 
     // REQUÊTES
     
-    Set<Sommet> getSuccessors() {
+    public Set<Sommet> getSuccessors() {
         return new HashSet<Sommet>(successors);
     }
     
-    String getName() {
+    public String getName() {
         return name;
     }
 }
