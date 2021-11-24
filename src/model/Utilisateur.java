@@ -4,6 +4,7 @@ import java.util.Set;
 
 public class Utilisateur extends Sommet {
     
+    private String firstName;
     private int age;
     
     public Utilisateur(Set<Sommet> succ, int age) {

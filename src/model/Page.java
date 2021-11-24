@@ -1,22 +1,24 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Page extends Sommet {
     
-    private Utilisateur admin;
+    private Set<Utilisateur> admins;
     
-    public Page(Set<Sommet> succ, Utilisateur admin) {
+    public Page(Set<Sommet> succ, Set<Utilisateur> admins) {
         super(succ);
-        this.admin = admin;
+        this.admins = new HashSet<Utilisateur>(admins);
     }
+    
     public Page(Utilisateur admin) {
         super();
     }
     
     // REQUÊTES
     
-    public Utilisateur getAdmin() {
-        return admin;
+    public Set<Utilisateur> getAdmins() {
+        return admins;
     }
 }

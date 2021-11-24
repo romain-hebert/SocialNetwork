@@ -11,12 +11,6 @@ public abstract class Sommet {
     
     private String name;
 
-    /**
-     * 
-     * @param succ
-     * 
-     * @pre succ != null
-     */
     public Sommet(Set<Sommet> succ) {
         Contract.checkCondition(succ != null);
 
