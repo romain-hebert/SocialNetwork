@@ -7,10 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Graphe {
+public class Graphe extends Observable {
     
     private Map<Sommet, Double> sommets;
     
@@ -130,10 +131,14 @@ public class Graphe {
     
     public void addNode(Sommet s) {
         sommets.put(s, 1.);
+        setChanged();
+        notifyObservers();
     }
     
     public void removeNode(Sommet s) {
         sommets.remove(s);
+        setChanged();
+        notifyObservers();
     }
     
     public void addArc(Sommet s1, Sommet s2) {
@@ -141,6 +146,8 @@ public class Graphe {
                 && s1 instanceof Utilisateur) {
             ((Utilisateur) s1).addSuccessor(s2);
         }
+        setChanged();
+        notifyObservers();
     }
     
     public void removeArc(Sommet s1, Sommet s2) {
@@ -149,6 +156,8 @@ public class Graphe {
             // s1 a s2 comme successeur, il est donc un Utilisateur.
             ((Utilisateur) s1).removeSuccessor(s2);
         }
+        setChanged();
+        notifyObservers();
     }
     
     public void save() {
@@ -157,6 +166,9 @@ public class Graphe {
     
     public void load() {
         
+
+        setChanged();
+        notifyObservers();
     }
     
     public void computePageRank() {
@@ -165,6 +177,8 @@ public class Graphe {
                 sommets.put(s, pr(s));
             }
         }
+        setChanged();
+        notifyObservers();
     }
     
     private double pr(Sommet s) {
