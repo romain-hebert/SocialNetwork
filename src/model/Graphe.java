@@ -2,18 +2,20 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Graphe {
     
-    private Set<Sommet> sommets;
+    private Map<Sommet, Double> sommets;
     
     public Graphe() {
-        sommets = new HashSet<Sommet>();
+        sommets = new HashMap<Sommet, Double>();
     }
     
     // REQUÊTES
@@ -25,14 +27,14 @@ public class Graphe {
     
     public int getArcNb() {
         int res = 0;
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             res += s.getSuccessors().size();
         }
         return res;
     }
     
     public Set<Sommet> getNodes() {
-        return new HashSet<Sommet>(sommets);
+        return sommets.keySet();
     }
     
     public Set<Sommet> getNodesSortedByName() {
@@ -43,7 +45,7 @@ public class Graphe {
             }
         });
         
-        n.addAll(sommets);
+        n.addAll(sommets.keySet());
         
         return n;
     }
@@ -56,7 +58,7 @@ public class Graphe {
             }
         });
         
-        d.addAll(sommets);
+        d.addAll(sommets.keySet());
         
         return d;
     }
@@ -64,7 +66,7 @@ public class Graphe {
     public Set<List<Sommet>> getArcs() {
         Set<List<Sommet>> arcs = new HashSet<List<Sommet>>();
         
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             for (Sommet succ : s.getSuccessors()) {
                 List<Sommet> l = new ArrayList<Sommet>(2);
                 l.add(s);
@@ -77,7 +79,7 @@ public class Graphe {
     }
     
     public Sommet getNodeFromName(String name) {
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             if (s.getName() == name) {
                 return s;
             }
@@ -90,7 +92,7 @@ public class Graphe {
         List<Integer> l = new ArrayList<Integer>(2);
         int ucmpt = 0;
         int pcmpt = 0;
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             if (s instanceof Utilisateur) {
                 ucmpt++;
             } else if (s instanceof Page) {
@@ -105,7 +107,7 @@ public class Graphe {
     public int meanUserAge() {
         int sum = 0;
         int cmpt = 0;
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             if (s instanceof Utilisateur) {
                 sum += ((Utilisateur) s).getAge();
                 cmpt++;
@@ -116,7 +118,7 @@ public class Graphe {
     
     public Set<Utilisateur> getAllAdmins() {
         Set<Utilisateur> adm = new HashSet<Utilisateur>();
-        for (Sommet s : sommets) {
+        for (Sommet s : sommets.keySet()) {
             if (s instanceof Page) {
                 adm.addAll(((Page) s).getAdmins());
             }
@@ -127,7 +129,7 @@ public class Graphe {
     // COMMANDES
     
     public void addNode(Sommet s) {
-        sommets.add(s);
+        sommets.put(s, 1.);
     }
     
     public void removeNode(Sommet s) {
@@ -135,14 +137,15 @@ public class Graphe {
     }
     
     public void addArc(Sommet s1, Sommet s2) {
-        if (sommets.contains(s1) && sommets.contains(s2) 
+        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
                 && s1 instanceof Utilisateur) {
             ((Utilisateur) s1).addSuccessor(s2);
         }
     }
     
     public void removeArc(Sommet s1, Sommet s2) {
-        if (s1.getSuccessors().contains(s2)) {
+        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
+                && s1.getSuccessors().contains(s2)) {
             // s1 a s2 comme successeur, il est donc un Utilisateur.
             ((Utilisateur) s1).removeSuccessor(s2);
         }
@@ -154,5 +157,21 @@ public class Graphe {
     
     public void load() {
         
+    }
+    
+    public void computePageRank() {
+        for (int i = 0; i <= 100; ++i) {
+            for (Sommet s : sommets.keySet()) {
+                sommets.put(s, pr(s));
+            }
+        }
+    }
+    
+    private double pr(Sommet s) {
+        double sum = 0;
+        for (Sommet s2 : s.getSuccessors()) {
+            sum += pr(s2) / s2.getSuccessors().size();
+        }
+        return 0.15 / getNodeNb() + 0.85 * sum;
     }
 }
