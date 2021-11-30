@@ -8,20 +8,12 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import util.Contract;
-
 public class Graphe {
     
-    Set<Sommet> sommets;
-    
-    public Graphe(Set<Sommet> sommets) {
-        Contract.checkCondition(sommets != null);
-        
-        this.sommets = sommets;
-    }
+    private Set<Sommet> sommets;
     
     public Graphe() {
-        this(new HashSet<Sommet>());
+        sommets = new HashSet<Sommet>();
     }
     
     // REQUÊTES
@@ -94,6 +86,44 @@ public class Graphe {
         return null;
     }
     
+    public List<Integer> getNbUsersAndPages() {
+        List<Integer> l = new ArrayList<Integer>(2);
+        int ucmpt = 0;
+        int pcmpt = 0;
+        for (Sommet s : sommets) {
+            if (s instanceof Utilisateur) {
+                ucmpt++;
+            } else if (s instanceof Page) {
+                pcmpt++;
+            }
+        }
+        l.add(0, ucmpt);
+        l.add(1, pcmpt);
+        return l;
+    }
+    
+    public int meanUserAge() {
+        int sum = 0;
+        int cmpt = 0;
+        for (Sommet s : sommets) {
+            if (s instanceof Utilisateur) {
+                sum += ((Utilisateur) s).getAge();
+                cmpt++;
+            }
+        }
+        return sum / cmpt;
+    }
+    
+    public Set<Utilisateur> getAllAdmins() {
+        Set<Utilisateur> adm = new HashSet<Utilisateur>();
+        for (Sommet s : sommets) {
+            if (s instanceof Page) {
+                adm.addAll(((Page) s).getAdmins());
+            }
+        }
+        return adm;
+    }
+    
     // COMMANDES
     
     public void addNode(Sommet s) {
@@ -116,5 +146,13 @@ public class Graphe {
             // s1 a s2 comme successeur, il est donc un Utilisateur.
             ((Utilisateur) s1).removeSuccessor(s2);
         }
+    }
+    
+    public void save() {
+        
+    }
+    
+    public void load() {
+        
     }
 }

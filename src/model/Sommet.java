@@ -9,16 +9,11 @@ public abstract class Sommet {
 
     protected Set<Sommet> successors;
     
-    private String name;
+    private final String name;
 
-    public Sommet(Set<Sommet> succ) {
-        Contract.checkCondition(succ != null);
-
-        successors = succ;
-    }
-
-    public Sommet() {
-        this(new HashSet<Sommet>());
+    public Sommet(String name) {
+        Contract.checkCondition(name != null);
+        this.name = name;
     }
 
     // REQUÊTES
