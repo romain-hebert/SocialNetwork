@@ -29,4 +29,29 @@ public class Page extends Sommet {
         Contract.checkCondition(u != null);
         admins.remove(u);
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        boolean result = false;
+        if (other instanceof Page) {
+            Page that = (Page) other;
+            result = super.equals(that)
+                    && (this.admins.equals(that.admins));
+        }
+        return result;
+    }
+
+    @Override
+    public boolean canEquals(Object other) {
+        return (other instanceof Page);
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result
+                + (admins == null ? 0 : admins.hashCode());
+        return result;
+    }
 }
