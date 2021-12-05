@@ -3,16 +3,19 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.naming.OperationNotSupportedException;
+
 import util.Contract;
 
 public abstract class Sommet {
 
-    protected Set<Sommet> successors;
+    private Set<Sommet> successors;
     
     private final String name;
 
     public Sommet(String name) {
         Contract.checkCondition(name != null);
+        successors = new HashSet<Sommet>();
         this.name = name;
     }
 
@@ -25,6 +28,19 @@ public abstract class Sommet {
     public String getName() {
         return name;
     }
+    
+    // COMMANDES
+    
+    public void addSuccessor(Sommet s) throws OperationNotSupportedException {
+        successors.add(s);
+    }
+    
+    public void removeSuccessor(Sommet s)
+            throws OperationNotSupportedException {
+        successors.remove(s);
+    }
+    
+    // OUTILS
     
     @Override
     public String toString() {

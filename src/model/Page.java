@@ -1,7 +1,8 @@
 package model;
 
-import java.util.HashSet;
 import java.util.Set;
+
+import javax.naming.OperationNotSupportedException;
 
 import util.Contract;
 
@@ -9,9 +10,10 @@ public class Page extends Sommet {
     
     private Set<Utilisateur> admins;
     
-    public Page(String name) {
+    public Page(String name, Set<Utilisateur> admins) {
         super(name);
-        admins = new HashSet<Utilisateur>();
+        Contract.checkCondition(admins != null);
+        this.admins = admins;
     }
     
     // REQUÊTES
@@ -29,6 +31,21 @@ public class Page extends Sommet {
         Contract.checkCondition(u != null);
         admins.remove(u);
     }
+    
+    // COMMANDES
+    
+    @Override
+    public void addSuccessor(Sommet s) throws OperationNotSupportedException {
+        throw new OperationNotSupportedException();
+    }
+    
+    @Override
+    public void removeSuccessor(Sommet s)
+            throws OperationNotSupportedException {
+        throw new OperationNotSupportedException();
+    }
+    
+    // OUTILS
     
     @Override
     public boolean equals(Object other) {
@@ -50,8 +67,9 @@ public class Page extends Sommet {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result
-                + (admins == null ? 0 : admins.hashCode());
+        for (Utilisateur a : admins) {
+            result = prime * result + a.getName().hashCode();
+        }
         return result;
     }
 }

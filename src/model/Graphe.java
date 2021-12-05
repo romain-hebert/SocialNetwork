@@ -11,6 +11,8 @@ import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Graphe extends Observable {
     
     private Map<Sommet, Double> sommets;
@@ -55,7 +57,8 @@ public class Graphe extends Observable {
         NavigableSet<Sommet> d = new TreeSet<Sommet>(new Comparator<Sommet>() {
             @Override
             public int compare(Sommet s1, Sommet s2) {
-                return s1.getSuccessors().size() - s2.getSuccessors().size();
+                return ((Integer) s1.getSuccessors().size())
+                        .compareTo(s2.getSuccessors().size());
             }
         });
         
@@ -114,7 +117,7 @@ public class Graphe extends Observable {
                 cmpt++;
             }
         }
-        return sum / cmpt;
+        return (int) Math.round((double) sum / cmpt);
     }
     
     public Set<Utilisateur> getAllAdmins() {
@@ -141,23 +144,38 @@ public class Graphe extends Observable {
         notifyObservers();
     }
     
-    public void addArc(Sommet s1, Sommet s2) {
+    public boolean addArc(Sommet s1, Sommet s2) {
         if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
                 && s1 instanceof Utilisateur) {
-            ((Utilisateur) s1).addSuccessor(s2);
+            try {
+                s1.addSuccessor(s2);
+            } catch (OperationNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            setChanged();
+            notifyObservers();
+            return true;
         }
-        setChanged();
-        notifyObservers();
+        return false;
     }
     
-    public void removeArc(Sommet s1, Sommet s2) {
+    public boolean removeArc(Sommet s1, Sommet s2) {
         if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
                 && s1.getSuccessors().contains(s2)) {
             // s1 a s2 comme successeur, il est donc un Utilisateur.
-            ((Utilisateur) s1).removeSuccessor(s2);
+            try {
+                s1.removeSuccessor(s2);
+            } catch (OperationNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            setChanged();
+            notifyObservers();
+            return true;
         }
-        setChanged();
-        notifyObservers();
+        return false;
     }
     
     public void save() {
@@ -187,5 +205,15 @@ public class Graphe extends Observable {
             sum += pr(s2) / s2.getSuccessors().size();
         }
         return 0.15 / getNodeNb() + 0.85 * sum;
+    }
+    
+    @Override
+    public String toString() {
+//        String str = "";
+//        for (Sommet s : sommets.keySet()) {
+//            str += s.toString() + "\n";
+//        }
+//        return str;
+        return sommets.keySet().toString();
     }
 }
