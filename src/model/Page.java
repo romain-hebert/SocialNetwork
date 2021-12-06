@@ -35,12 +35,13 @@ public class Page extends Sommet {
     // COMMANDES
     
     @Override
-    public void addSuccessor(Sommet s) throws OperationNotSupportedException {
+    public boolean addSuccessor(Sommet s)
+            throws OperationNotSupportedException {
         throw new OperationNotSupportedException();
     }
     
     @Override
-    public void removeSuccessor(Sommet s)
+    public boolean removeSuccessor(Sommet s)
             throws OperationNotSupportedException {
         throw new OperationNotSupportedException();
     }

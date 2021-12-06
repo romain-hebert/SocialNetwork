@@ -31,13 +31,14 @@ public abstract class Sommet {
     
     // COMMANDES
     
-    public void addSuccessor(Sommet s) throws OperationNotSupportedException {
-        successors.add(s);
+    public boolean addSuccessor(Sommet s)
+            throws OperationNotSupportedException {
+        return successors.add(s);
     }
     
-    public void removeSuccessor(Sommet s)
+    public boolean removeSuccessor(Sommet s)
             throws OperationNotSupportedException {
-        successors.remove(s);
+        return successors.remove(s);
     }
     
     // OUTILS

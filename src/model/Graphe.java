@@ -49,7 +49,6 @@ public class Graphe extends Observable {
         });
         
         n.addAll(sommets.keySet());
-        
         return n;
     }
     
@@ -57,13 +56,17 @@ public class Graphe extends Observable {
         NavigableSet<Sommet> d = new TreeSet<Sommet>(new Comparator<Sommet>() {
             @Override
             public int compare(Sommet s1, Sommet s2) {
-                return ((Integer) s1.getSuccessors().size())
-                        .compareTo(s2.getSuccessors().size());
+                Integer succCompar;
+                if ((succCompar = (Integer) s1.getSuccessors().size())
+                    .compareTo(s2.getSuccessors().size()) != 0) {
+                    
+                    return succCompar;
+                }
+                return s1.getName().compareTo(s2.getName());
             }
         });
         
         d.addAll(sommets.keySet());
-        
         return d;
     }
     
@@ -132,28 +135,9 @@ public class Graphe extends Observable {
     
     // COMMANDES
     
-    public void addNode(Sommet s) {
-        sommets.put(s, 1.);
-        setChanged();
-        notifyObservers();
-    }
-    
-    public void removeNode(Sommet s) {
-        sommets.remove(s);
-        setChanged();
-        notifyObservers();
-    }
-    
-    public boolean addArc(Sommet s1, Sommet s2) {
-        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
-                && s1 instanceof Utilisateur) {
-            try {
-                s1.addSuccessor(s2);
-            } catch (OperationNotSupportedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
+    public boolean addNode(Sommet s) {
+        if (!sommets.containsKey(s)) {
+            sommets.put(s, 1.);
             setChanged();
             notifyObservers();
             return true;
@@ -161,19 +145,36 @@ public class Graphe extends Observable {
         return false;
     }
     
-    public boolean removeArc(Sommet s1, Sommet s2) {
-        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2) 
-                && s1.getSuccessors().contains(s2)) {
-            // s1 a s2 comme successeur, il est donc un Utilisateur.
-            try {
-                s1.removeSuccessor(s2);
-            } catch (OperationNotSupportedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+    public boolean removeNode(Sommet s) {
+        if (sommets.remove(s) != null) {
             setChanged();
             notifyObservers();
             return true;
+        }
+        return false;
+    }
+    
+    public boolean addArc(Sommet s1, Sommet s2)
+            throws OperationNotSupportedException {
+        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2)) {
+            if (s1.addSuccessor(s2)) {
+                setChanged();
+                notifyObservers();
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean removeArc(Sommet s1, Sommet s2)
+            throws OperationNotSupportedException {
+        if (sommets.keySet().contains(s1) && sommets.keySet().contains(s2)) {
+            // s1 a s2 comme successeur, il est donc un Utilisateur.
+            if (s1.removeSuccessor(s2)) {
+                setChanged();
+                notifyObservers();
+                return true;
+            }
         }
         return false;
     }

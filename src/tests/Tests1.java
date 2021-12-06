@@ -19,9 +19,13 @@ public class Tests1 {
                 new HashSet<Utilisateur>(
                         Arrays.asList(new Utilisateur[]{hebert})));
         Utilisateur marybrasse = new Utilisateur("Marybrasse", "Thomas", 22);
+        Utilisateur selmi = new Utilisateur("Selmi", "Carla", 60);
+//        marybrasse.addSuccessor(hebert);
+//        marybrasse.addSuccessor(trololo);
         g.addNode(hebert);
         g.addNode(trololo);
         g.addNode(marybrasse);
+        g.addNode(selmi);
         
         g.addArc(hebert, trololo);
         g.addArc(trololo, hebert);
@@ -29,8 +33,8 @@ public class Tests1 {
         System.out.println(g.toString());
         System.out.println(g.getNbUsersAndPages().toString());
         System.out.println(g.meanUserAge());
-        System.out.println(g.getNodesSortedByName());
         System.out.println(g.getNodesSortedByDegree());
+        System.out.println(g.getNodesSortedByName());
     }
 
 }
