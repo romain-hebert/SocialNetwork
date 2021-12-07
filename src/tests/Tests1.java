@@ -27,16 +27,25 @@ public class Tests1 {
         g.addNode(marybrasse);
         g.addNode(selmi);
         
-        g.addArc(hebert, trololo);
-        g.addArc(trololo, hebert);
+        System.out.println("----------------------------------");
+        System.out.println(g.getNodes());
         
+        System.out.println(g.addArc(hebert, trololo));
+//        System.out.println(g.addArc(trololo, hebert));
+        System.out.println(g.addArc(marybrasse, selmi));
+        System.out.println("----------------------------------");
+        System.out.println(g.getNodes());
+        System.out.println(g.addArc(marybrasse, trololo));
+        System.out.println(g.addArc(selmi, trololo));
+        System.out.println(g.addArc(hebert, selmi));
+        System.out.println("----------------------------------");
         System.out.println(g.toString());
         System.out.println(g.getNbUsersAndPages().toString());
         System.out.println(g.meanUserAge());
         System.out.println(g.getNodesSortedByDegree());
         System.out.println(g.getNodesSortedByName());
-        g.computePageRank();
-        System.out.println(g.toString());
+        System.out.println(g.computePageRank());
+        System.out.println(hebert.getSuccessors().size());
     }
 
 }
