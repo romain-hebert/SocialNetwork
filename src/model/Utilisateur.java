@@ -36,30 +36,30 @@ public class Utilisateur extends Sommet {
         return str;
     }
     
-    @Override
-    public boolean equals(Object other) {
-        boolean result = false;
-        if (other instanceof Utilisateur) {
-            Utilisateur that = (Utilisateur) other;
-            result = super.equals(that)
-                    && (this.firstName == that.firstName)
-                    && (this.age == that.age);
-        }
-        return result;
-    }
-    
-    @Override
-    public boolean canEquals(Object other) {
-        return (other instanceof Utilisateur);
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result
-                + (firstName == null ? 0 : firstName.hashCode());
-        result = prime * result + age;
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object other) {
+//        boolean result = false;
+//        if (other instanceof Utilisateur) {
+//            Utilisateur that = (Utilisateur) other;
+//            result = super.equals(that)
+//                    && (this.firstName == that.firstName)
+//                    && (this.age == that.age);
+//        }
+//        return result;
+//    }
+//    
+//    @Override
+//    public boolean canEquals(Object other) {
+//        return (other instanceof Utilisateur);
+//    }
+//    
+//    @Override
+//    public int hashCode() {
+//        final int prime = 31;
+//        int result = super.hashCode();
+//        result = prime * result
+//                + (firstName == null ? 0 : firstName.hashCode());
+//        result = prime * result + age;
+//        return result;
+//    }
 }

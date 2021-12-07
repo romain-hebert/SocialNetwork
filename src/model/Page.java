@@ -60,29 +60,29 @@ public class Page extends Sommet {
         return str;
     }
     
-    @Override
-    public boolean equals(Object other) {
-        boolean result = false;
-        if (other instanceof Page) {
-            Page that = (Page) other;
-            result = super.equals(that)
-                    && (this.admins.equals(that.admins));
-        }
-        return result;
-    }
-
-    @Override
-    public boolean canEquals(Object other) {
-        return (other instanceof Page);
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        for (Utilisateur a : admins) {
-            result = prime * result + a.getName().hashCode();
-        }
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object other) {
+//        boolean result = false;
+//        if (other instanceof Page) {
+//            Page that = (Page) other;
+//            result = super.equals(that)
+//                    && (this.admins.equals(that.admins));
+//        }
+//        return result;
+//    }
+//
+//    @Override
+//    public boolean canEquals(Object other) {
+//        return (other instanceof Page);
+//    }
+//    
+//    @Override
+//    public int hashCode() {
+//        final int prime = 31;
+//        int result = super.hashCode();
+//        for (Utilisateur a : admins) {
+//            result = prime * result + a.getName().hashCode();
+//        }
+//        return result;
+//    }
 }

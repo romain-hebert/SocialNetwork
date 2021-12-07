@@ -19,12 +19,14 @@ public class Tests1 {
                 new HashSet<Utilisateur>(
                         Arrays.asList(new Utilisateur[]{hebert})));
         Utilisateur marybrasse = new Utilisateur("Marybrasse", "Thomas", 22);
+        Utilisateur marybrasse2 = new Utilisateur("Marybrasse", "Onch", 12);
         Utilisateur selmi = new Utilisateur("Selmi", "Carla", 60);
 //        marybrasse.addSuccessor(hebert);
 //        marybrasse.addSuccessor(trololo);
         g.addNode(hebert);
         g.addNode(trololo);
-        g.addNode(marybrasse);
+        System.out.println(g.addNode(marybrasse));
+        System.out.println(g.addNode(marybrasse2));
         g.addNode(selmi);
         
         System.out.println("----------------------------------");

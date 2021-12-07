@@ -201,7 +201,7 @@ public class Graphe extends Observable {
             throws OperationNotSupportedException {
         
         // Ne fonctionne pas?
-//        Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
+        Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
         
         if (s1.addSuccessor(s2)) {
             setChanged();
@@ -215,7 +215,7 @@ public class Graphe extends Observable {
             throws OperationNotSupportedException {
         
         // Ne fonctionne pas?
-//        Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
+        Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
         
         if (s1.removeSuccessor(s2)) {
             setChanged();
