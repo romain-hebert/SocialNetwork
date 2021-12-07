@@ -35,6 +35,8 @@ public class Tests1 {
         System.out.println(g.meanUserAge());
         System.out.println(g.getNodesSortedByDegree());
         System.out.println(g.getNodesSortedByName());
+        g.computePageRank();
+        System.out.println(g.toString());
     }
 
 }

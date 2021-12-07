@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.Observable;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.naming.OperationNotSupportedException;
 
 public class Graphe extends Observable {
     
+    private static final int PAGERANK_ITERATIONS = 100;
     private Map<Sommet, Double> sommets;
     
     public Graphe() {
@@ -56,10 +58,9 @@ public class Graphe extends Observable {
         NavigableSet<Sommet> d = new TreeSet<Sommet>(new Comparator<Sommet>() {
             @Override
             public int compare(Sommet s1, Sommet s2) {
-                Integer succCompar;
-                if ((succCompar = (Integer) s1.getSuccessors().size())
-                    .compareTo(s2.getSuccessors().size()) != 0) {
-                    
+                Integer succCompar = ((Integer) s1.getSuccessors().size())
+                        .compareTo(s2.getSuccessors().size());
+                if (succCompar != 0) {
                     return succCompar;
                 }
                 return s1.getName().compareTo(s2.getName());
@@ -191,9 +192,14 @@ public class Graphe extends Observable {
     }
     
     public void computePageRank() {
-        for (int i = 0; i <= 100; ++i) {
-            for (Sommet s : sommets.keySet()) {
+        int i = 0;
+        for (Sommet s : new HashSet<Sommet>(sommets.keySet())) {
+            sommets.put(s, 1.);
+        }
+        while (i <= PAGERANK_ITERATIONS) {
+            for (Sommet s : new HashSet<Sommet>(sommets.keySet())) {
                 sommets.put(s, pr(s));
+                i++;
             }
         }
         setChanged();
@@ -202,19 +208,31 @@ public class Graphe extends Observable {
     
     private double pr(Sommet s) {
         double sum = 0;
-        for (Sommet s2 : s.getSuccessors()) {
-            sum += pr(s2) / s2.getSuccessors().size();
+        for (Sommet s2 : enteringNodes(s)) {
+            sum += (sommets.get(s2) != 1.) ? sommets.get(s2) : pr(s2)
+                    / s2.getSuccessors().size();
         }
         return 0.15 / getNodeNb() + 0.85 * sum;
     }
     
+    private Set<Sommet> enteringNodes(Sommet s) {
+        Set<Sommet> en = new HashSet<Sommet>();
+        for (Sommet s2 : sommets.keySet()) {
+            if (s2.getSuccessors().contains(s)) {
+                en.add(s2);
+            }
+        }
+        return en;
+    }
+    
     @Override
     public String toString() {
-//        String str = "";
-//        for (Sommet s : sommets.keySet()) {
-//            str += s.toString() + "\n";
-//        }
-//        return str;
-        return sommets.keySet().toString();
+        String str = "";
+        for (Entry<Sommet, Double> s : sommets.entrySet()) {
+            str += (s.getValue() != 1. ? "PR: " + s.getValue() + "; " : "")
+                    + s.getKey().toString()
+                    + "\n";
+        }
+        return str;
     }
 }

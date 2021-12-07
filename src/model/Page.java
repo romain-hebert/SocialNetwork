@@ -12,7 +12,7 @@ public class Page extends Sommet {
     
     public Page(String name, Set<Utilisateur> admins) {
         super(name);
-        Contract.checkCondition(admins != null);
+        Contract.checkCondition(admins != null && !admins.isEmpty());
         this.admins = admins;
     }
     
@@ -47,6 +47,18 @@ public class Page extends Sommet {
     }
     
     // OUTILS
+    
+    @Override
+    public String toString() {
+        String str = "(P)" + getName();
+        if (!admins.isEmpty()) {
+            str += ":";
+            for (Utilisateur s : admins) {
+                str += " " + s.getName();
+            }
+        }
+        return str;
+    }
     
     @Override
     public boolean equals(Object other) {

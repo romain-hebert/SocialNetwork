@@ -44,15 +44,6 @@ public abstract class Sommet {
     // OUTILS
     
     @Override
-    public String toString() {
-        String str = name;
-        for (Sommet s : successors) {
-            str += " " + s.name;
-        }
-        return str;
-    }
-    
-    @Override
     public boolean equals(Object other) {
         boolean result = false;
         if (other instanceof Sommet) {

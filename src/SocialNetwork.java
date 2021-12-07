@@ -10,8 +10,8 @@ import model.Graphe;
 
 public class SocialNetwork {
     
-    JFrame mainFrame;
-    Graphe model;
+    private JFrame mainFrame;
+    private Graphe model;
     
     public SocialNetwork() {
         createModel();
@@ -43,7 +43,7 @@ public class SocialNetwork {
                 // TODO Auto-generated method stub
                 
             }
-        });;
+        });
     }
     private void display() {
         refresh();

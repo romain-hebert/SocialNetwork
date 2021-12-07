@@ -24,6 +24,19 @@ public class Utilisateur extends Sommet {
     // OUTILS
     
     @Override
+    public String toString() {
+        String str = "(U)" + getFirstName() + " " + getName()
+                + ", " + age + "ans";
+        if (!getSuccessors().isEmpty()) {
+            str += ":";
+            for (Sommet s : getSuccessors()) {
+                str += " " + s.getName();
+            }
+        }
+        return str;
+    }
+    
+    @Override
     public boolean equals(Object other) {
         boolean result = false;
         if (other instanceof Utilisateur) {
