@@ -93,7 +93,7 @@ public class Graphe extends Observable {
     
     public Sommet getNodeFromName(String name) {
         for (Sommet s : sommets) {
-            if (s.getName() == name) {
+            if (s.getName().equals(name)) {
                 return s;
             }
         }
@@ -179,8 +179,7 @@ public class Graphe extends Observable {
     // COMMANDES
     
     public boolean addNode(Sommet s) {
-        if (!sommets.contains(s)) {
-            sommets.add(s);
+        if (sommets.add(s)) {
             setChanged();
             notifyObservers();
             return true;
@@ -200,7 +199,6 @@ public class Graphe extends Observable {
     public boolean addArc(Sommet s1, Sommet s2)
             throws OperationNotSupportedException {
         
-        // Ne fonctionne pas?
         Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
         
         if (s1.addSuccessor(s2)) {
@@ -214,7 +212,6 @@ public class Graphe extends Observable {
     public boolean removeArc(Sommet s1, Sommet s2)
             throws OperationNotSupportedException {
         
-        // Ne fonctionne pas?
         Contract.checkCondition(sommets.contains(s1) && sommets.contains(s2));
         
         if (s1.removeSuccessor(s2)) {

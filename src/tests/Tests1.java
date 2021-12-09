@@ -15,9 +15,7 @@ public class Tests1 {
             throws OperationNotSupportedException {
         Graphe g = new Graphe();
         Utilisateur hebert = new Utilisateur("Hebert", "Romain", 23);
-        Page trololo = new Page("Trololo",
-                new HashSet<Utilisateur>(
-                        Arrays.asList(new Utilisateur[]{hebert})));
+        Page trololo = new Page("Trololo", hebert);
         Utilisateur marybrasse = new Utilisateur("Marybrasse", "Thomas", 22);
         Utilisateur marybrasse2 = new Utilisateur("Marybrasse", "Onch", 12);
         Utilisateur selmi = new Utilisateur("Selmi", "Carla", 60);
@@ -48,6 +46,7 @@ public class Tests1 {
         System.out.println(g.getNodesSortedByName());
         System.out.println(g.computePageRank());
         System.out.println(hebert.getSuccessors().size());
+        System.out.println(g.getNodeFromName("Hebert"));
     }
 
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.naming.OperationNotSupportedException;
@@ -10,10 +11,11 @@ public class Page extends Sommet {
     
     private Set<Utilisateur> admins;
     
-    public Page(String name, Set<Utilisateur> admins) {
+    public Page(String name, Utilisateur creator) {
         super(name);
-        Contract.checkCondition(admins != null && !admins.isEmpty());
-        this.admins = admins;
+        Contract.checkCondition(creator != null);
+        admins = new HashSet<Utilisateur>();
+        admins.add(creator);
     }
     
     // REQUÊTES
@@ -59,30 +61,4 @@ public class Page extends Sommet {
         }
         return str;
     }
-    
-//    @Override
-//    public boolean equals(Object other) {
-//        boolean result = false;
-//        if (other instanceof Page) {
-//            Page that = (Page) other;
-//            result = super.equals(that)
-//                    && (this.admins.equals(that.admins));
-//        }
-//        return result;
-//    }
-//
-//    @Override
-//    public boolean canEquals(Object other) {
-//        return (other instanceof Page);
-//    }
-//    
-//    @Override
-//    public int hashCode() {
-//        final int prime = 31;
-//        int result = super.hashCode();
-//        for (Utilisateur a : admins) {
-//            result = prime * result + a.getName().hashCode();
-//        }
-//        return result;
-//    }
 }
