@@ -17,6 +17,8 @@ import util.Contract;
 public class Graphe extends Observable {
     
     private static final int PAGERANK_ITERATIONS = 100;
+    private static final int SHORTPATH_INIT = 10000000;
+    
     private Set<Sommet> sommets;
     private Map<Sommet, Double> pageRank;
     
@@ -176,6 +178,35 @@ public class Graphe extends Observable {
         return en;
     }
     
+    public Map<Sommet, Integer> shortestPath(Sommet s) {
+        Map<Sommet, Integer> spMap = new HashMap<Sommet, Integer>();
+        for (Sommet s1 : sommets) {
+            spMap.put(s1, SHORTPATH_INIT);
+        }
+        spMap.put(s, 0);
+        
+        Set<Sommet> p = new HashSet<Sommet>(sommets);
+        while (!p.isEmpty()) {
+            Sommet u = null;
+            for (Sommet u1 : p) {
+                if (u == null) {
+                    u = u1;
+                } else if (spMap.get(u1) < spMap.get(u)) {
+                    u = u1;
+                }
+            }
+            p.remove(u);
+            for (Sommet v : u.getSuccessors()) {
+                Integer alt = spMap.get(u) + 1;
+                if (alt <= spMap.get(v)) {
+                    spMap.put(v, alt);
+                }
+            }
+        }
+        
+        return spMap;
+    }
+    
     // COMMANDES
     
     public boolean addNode(Sommet s) {
@@ -189,6 +220,16 @@ public class Graphe extends Observable {
     
     public boolean removeNode(Sommet s) {
         if (sommets.remove(s)) {
+            for (Sommet s1 : sommets) {
+                if (s1.getSuccessors().contains(s)) {
+                    try {
+                        s1.removeSuccessor(s);
+                    } catch (OperationNotSupportedException e) {
+                        
+                    }
+                }
+            }
+            
             setChanged();
             notifyObservers();
             return true;

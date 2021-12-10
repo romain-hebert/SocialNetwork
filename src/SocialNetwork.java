@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,11 +34,15 @@ public class SocialNetwork {
     private Graphe model;
     private JTextArea graphTextArea;
     private JTextArea requestTextArea;
+    private JLabel stateLabel;
     private JButton addNodeButton;
     private JButton removeNodeButton;
     private JButton addArcButton;
     private JButton removeArcButton;
-    private JLabel stateLabel;
+    private JButton sortedByNameButton;
+    private JButton sortedByDegreeButton;
+    private JButton pageRankButton;
+    private JButton shortestPathButton;
     
     private static final int TEXTAREA_ROWS = 15;
     private static final int TEXTAREA_COL = 40;
@@ -57,6 +62,7 @@ public class SocialNetwork {
     private void createView() {
         mainFrame = new JFrame("Social Network");
         graphTextArea = new JTextArea(TEXTAREA_ROWS, TEXTAREA_COL);
+        stateLabel = new JLabel("Graphe vide");
         graphTextArea.setEditable(false);
         requestTextArea = new JTextArea(TEXTAREA_ROWS, TEXTAREA_COL);
         requestTextArea.setEditable(false);
@@ -64,23 +70,26 @@ public class SocialNetwork {
         removeNodeButton = new JButton("Retirer");
         addArcButton = new JButton("Ajouter");
         removeArcButton = new JButton("Retirer");
-        stateLabel = new JLabel("Graphe vide");
+        sortedByNameButton = new JButton("Trié par nom");
+        sortedByDegreeButton = new JButton("Trié par degré");
+        pageRankButton = new JButton("Page Rank");
+        shortestPathButton = new JButton("Chemin + court");
     }
     
     private void placeComponents() {
         JPanel p = new JPanel(new GridLayout(0, 1)); {
-            JPanel q = new JPanel(); {
+            JPanel q = new JPanel(new BorderLayout()); {
                 JPanel r = new JPanel(new BorderLayout()); {
                     r.add(new JScrollPane(graphTextArea), BorderLayout.CENTER);
                     r.add(stateLabel, BorderLayout.SOUTH);
                 }
-                q.add(r);
+                q.add(r, BorderLayout.CENTER);
                 q.setBorder(BorderFactory.createTitledBorder(
                         "État du graphe"));
             }
             p.add(q);
-            q = new JPanel(); {
-                q.add(new JScrollPane(requestTextArea));
+            q = new JPanel(new BorderLayout()); {
+                q.add(new JScrollPane(requestTextArea), BorderLayout.CENTER);
                 q.setBorder(BorderFactory.createTitledBorder(
                         "Resultat de la requête"));
             }
@@ -89,34 +98,38 @@ public class SocialNetwork {
         }
         mainFrame.add(p, BorderLayout.CENTER);
         
-        p = new JPanel(); {
+        p = new JPanel(new BorderLayout()); {
             JPanel q = new JPanel(new GridLayout(0, 1)); {
                 // Panel Sommets
-                JPanel r = new JPanel(); {
-                    JPanel s = new JPanel(new GridLayout(0, 2)); {
-                        s.add(addNodeButton);
-                        s.add(removeNodeButton);
-                    }
+                JPanel r = new JPanel(new GridLayout(0, 1)); {
+                    r.add(addNodeButton);
+                    r.add(removeNodeButton);
                     r.setBorder(BorderFactory.createTitledBorder("Sommets"));
-                    r.add(s);
                 }
                 q.add(r);
                 // Panel Arcs
-                r = new JPanel(); {
-                    JPanel s = new JPanel(new GridLayout(0, 2)); {
-                        s.add(addArcButton);
-                        s.add(removeArcButton);
-                    }
+                r = new JPanel(new GridLayout(0, 1)); {
+                    r.add(addArcButton);
+                    r.add(removeArcButton);
                     r.setBorder(BorderFactory.createTitledBorder("Arcs"));
-                    r.add(s);
                 }
                 q.add(r);
-                r = new JPanel(); {
-                    
+                // Tris
+                r = new JPanel(new GridLayout(0, 1)); {
+                    r.add(sortedByNameButton);
+                    r.add(sortedByDegreeButton);
+                    r.setBorder(BorderFactory.createTitledBorder("Tris"));
+                }
+                q.add(r);
+                // Algos
+                r = new JPanel(new GridLayout(0, 1)); {
+                    r.add(pageRankButton);
+                    r.add(shortestPathButton);
+                    r.setBorder(BorderFactory.createTitledBorder("Algos"));
                 }
                 q.add(r);
             }
-            p.add(q);
+            p.add(q, BorderLayout.NORTH);
         }
         mainFrame.add(p, BorderLayout.WEST);
     }
@@ -137,7 +150,7 @@ public class SocialNetwork {
                 final String request = "Ajouter un sommet";
                 // Demander le type du nouveau sommet
                 String type = (String) JOptionPane.showInputDialog(
-                        null,
+                        mainFrame,
                         "Selectionnez le type de sommet.",
                         request,
                         JOptionPane.QUESTION_MESSAGE,
@@ -264,11 +277,66 @@ public class SocialNetwork {
             }
         });
         
+        sortedByNameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = "";
+                for (Sommet s : model.getNodesSortedByName()) {
+                    str += s.toString() + "\n";
+                }
+                requestTextArea.setText(str);
+            }
+        });
         
+        sortedByDegreeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = "";
+                for (Sommet s : model.getNodesSortedByDegree()) {
+                    str += s.toString() + "\n";
+                }
+                requestTextArea.setText(str);
+            }
+        });
+        
+        pageRankButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String str = "";
+                for (Entry<Sommet, Double> en
+                        : model.computePageRank().entrySet()) {
+                    str += en.getKey().getName() + "=" + en.getValue() + "\n";
+                }
+                requestTextArea.setText(str);
+            }
+        });
+        
+        shortestPathButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String request = "Chemin le plus court";
+                String name = textFieldDialog(request,
+                        "Choisir le sommet source");
+                if (name == null) {
+                    return;
+                }
+                
+                Sommet s = model.getNodeFromName(name);
+                requete(request, s != null);
+                String str = "";
+                for (Entry<Sommet, Integer> en
+                        : model.shortestPath(s).entrySet()) {
+                    str += en.getKey().getName() + "=" + en.getValue() + "\n";
+                }
+                requestTextArea.setText(str);
+            }
+        });
     }
     
     private String textFieldDialog(String request, String field) {
-        return (String) JOptionPane.showInputDialog(null,
+        return (String) JOptionPane.showInputDialog(
+                mainFrame,
                 field,
                 request,
                 JOptionPane.QUESTION_MESSAGE);
@@ -277,7 +345,8 @@ public class SocialNetwork {
     private void requete(String request, boolean result) {
         if (!result) {
             requestTextArea.setText(request + ": Échec");
-            JOptionPane.showMessageDialog(null,
+            JOptionPane.showMessageDialog(
+                    mainFrame,
                     request + ": Échec", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
         } else {
@@ -295,7 +364,7 @@ public class SocialNetwork {
     private void refresh() {
         graphTextArea.setText(model.toString());
         List<Integer> l = model.getNbUsersAndPages();
-        stateLabel.setText(model.getNodeNb() + " sommets ("
+        stateLabel.setText(model.getNodeNb() + " sommets (dont "
                 + l.get(0) + " utilisateur(s) & " + l.get(1) + " page(s)), "
                         + model.getArcNb() + " arcs");
     }

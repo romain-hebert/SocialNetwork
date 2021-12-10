@@ -30,14 +30,14 @@ public class Tests1 {
         System.out.println("----------------------------------");
         System.out.println(g.getNodes());
         
-        System.out.println(g.addArc(hebert, trololo));
+//        System.out.println(g.addArc(hebert, trololo));
 //        System.out.println(g.addArc(trololo, hebert));
         System.out.println(g.addArc(marybrasse, selmi));
+        g.addArc(hebert, selmi);
         System.out.println("----------------------------------");
         System.out.println(g.getNodes());
         System.out.println(g.addArc(marybrasse, trololo));
         System.out.println(g.addArc(selmi, trololo));
-        System.out.println(g.addArc(hebert, selmi));
         System.out.println("----------------------------------");
         System.out.println(g.toString());
         System.out.println(g.getNbUsersAndPages().toString());
@@ -47,6 +47,8 @@ public class Tests1 {
         System.out.println(g.computePageRank());
         System.out.println(hebert.getSuccessors().size());
         System.out.println(g.getNodeFromName("Hebert"));
+        System.out.println("----------------------------------");
+        System.out.println(g.shortestPath(hebert));
     }
 
 }
