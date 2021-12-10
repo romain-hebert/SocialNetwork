@@ -1,5 +1,13 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,6 +18,9 @@ import java.util.NavigableSet;
 import java.util.Observable;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.naming.OperationNotSupportedException;
 
 import util.Contract;
@@ -18,6 +29,12 @@ public class Graphe extends Observable {
     
     private static final int PAGERANK_ITERATIONS = 100;
     private static final int SHORTPATH_INIT = 10000000;
+
+    //TODO
+    private static final String USER_PATTERN = "";
+    private static final String PAGE_PATTERN = "";
+    private static final String LINE_PATTERN =
+            USER_PATTERN + "|" + PAGE_PATTERN;
     
     private Set<Sommet> sommets;
     private Map<Sommet, Double> pageRank;
@@ -150,8 +167,8 @@ public class Graphe extends Observable {
         while (i <= PAGERANK_ITERATIONS) {
             for (Sommet s : sommets) {
                 pageRank.put(s, pr(s));
-                i++;
             }
+            i++;
         }
         return pageRank;
     }
@@ -216,15 +233,6 @@ public class Graphe extends Observable {
     
     public boolean removeNode(Sommet s) {
         if (sommets.remove(s)) {
-//            for (Sommet s1 : sommets) {
-//                if (s1.getSuccessors().contains(s)) {
-//                    try {
-//                        s1.removeSuccessor(s);
-//                    } catch (OperationNotSupportedException e) {
-//                        
-//                    }
-//                }
-//            }
             for (Sommet s1 : enteringNodes(s)) {
                 try {
                     s1.removeSuccessor(s);
@@ -266,17 +274,53 @@ public class Graphe extends Observable {
         return false;
     }
     
-    public void save() {
+    public void save(File f) throws IOException {
+        Contract.checkCondition(f != null);
         
+        Writer fw = new FileWriter(f);
+        BufferedWriter bw = new BufferedWriter(fw);
+        
+        for (Sommet s : sommets) {
+            s.save(bw);
+            bw.newLine();
+        }
+        
+        if (bw != null) {
+            bw.close();
+        }
+        if (fw != null) {
+            fw.close();
+        }
     }
     
-    public void load() {
+    public void load(File f) throws IOException, Exception {
+        Contract.checkCondition(f != null);
         
-
+        Reader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+        
+        String line = br.readLine();
+        while (line != null) {
+            Pattern p = Pattern.compile(LINE_PATTERN);
+            Matcher m = p.matcher(line);
+            if (!m.matches()) {
+                fr.close();
+                br.close();
+                throw new Exception();
+            }
+            //TODO
+        }
+        
+        if (br != null) {
+            br.close();
+        }
+        if (fr != null) {
+            fr.close();
+        }
         setChanged();
         notifyObservers();
     }
-    
+
     @Override
     public String toString() {
         String str = "";

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,6 +44,8 @@ public abstract class Sommet {
     }
     
     // OUTILS
+    
+    public abstract void save(BufferedWriter bw) throws IOException;
     
     @Override
     public boolean equals(Object other) {

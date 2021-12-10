@@ -1,6 +1,10 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.naming.OperationNotSupportedException;
@@ -30,7 +34,7 @@ public class Page extends Sommet {
     }
     
     public void removeAdmin(Utilisateur u) {
-        Contract.checkCondition(u != null);
+        Contract.checkCondition(u != null && admins.size() != 1);
         admins.remove(u);
     }
     
@@ -49,6 +53,16 @@ public class Page extends Sommet {
     }
     
     // OUTILS
+
+    @Override
+    public void save(BufferedWriter bw) throws IOException {
+        bw.write(getName() + ":");
+        List<Sommet> l = new ArrayList<Sommet>(admins);
+        bw.write(l.get(0).getName());
+        for (int i = 1; i < l.size(); ++i) {
+            bw.write(";" + l.get(i).getName());
+        }
+    }
     
     @Override
     public String toString() {

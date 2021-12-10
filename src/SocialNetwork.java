@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Observable;
@@ -13,6 +14,7 @@ import javax.naming.OperationNotSupportedException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,6 +45,9 @@ public class SocialNetwork {
     private JButton sortedByDegreeButton;
     private JButton pageRankButton;
     private JButton shortestPathButton;
+    private JButton getAdminsButton;
+    private JButton saveButton;
+    private JButton loadButton;
     
     private static final int TEXTAREA_ROWS = 15;
     private static final int TEXTAREA_COL = 40;
@@ -73,6 +78,9 @@ public class SocialNetwork {
         sortedByDegreeButton = new JButton("Trié par degré");
         pageRankButton = new JButton("Page Rank");
         shortestPathButton = new JButton("Chemin + court");
+        getAdminsButton = new JButton("Administrateurs");
+        saveButton = new JButton("Sauvegarder");
+        loadButton = new JButton("Charger");
     }
     
     private void placeComponents() {
@@ -129,6 +137,13 @@ public class SocialNetwork {
                 q.add(r);
             }
             p.add(q, BorderLayout.NORTH);
+            
+            q = new JPanel(new GridLayout(0, 1)); {
+                q.add(saveButton);
+                q.add(loadButton);
+                q.setBorder(BorderFactory.createTitledBorder("Gestion"));
+            }
+            p.add(q, BorderLayout.SOUTH);
         }
         mainFrame.add(p, BorderLayout.WEST);
     }
@@ -311,7 +326,6 @@ public class SocialNetwork {
         });
         
         shortestPathButton.addActionListener(new ActionListener() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 String request = "Chemin le plus court";
@@ -329,6 +343,33 @@ public class SocialNetwork {
                     str += en.getKey().getName() + "=" + en.getValue() + "\n";
                 }
                 requestTextArea.setText(str);
+            }
+        });
+        
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String request = "Sauvegarde";
+                boolean result = true;
+                JFileChooser fc = new JFileChooser();
+                if (fc.showSaveDialog(mainFrame) 
+                        == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        model.save(fc.getSelectedFile());
+                    } catch (IOException e1) {
+                        result = false;
+                    } finally {
+                        requete(request, result);
+                    }
+                }
+            }
+        });
+        
+        loadButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO
             }
         });
     }
@@ -368,7 +409,8 @@ public class SocialNetwork {
         List<Integer> l = model.getNbUsersAndPages();
         stateLabel.setText(model.getNodeNb() + " sommets (dont "
                 + l.get(0) + " utilisateur(s) & " + l.get(1) + " page(s)), "
-                        + model.getArcNb() + " arcs");
+                + model.getArcNb() + " arcs, " + model.meanUserAge()
+                + " ans en moyenne");
     }
     
     

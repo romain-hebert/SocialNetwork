@@ -1,5 +1,10 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utilisateur extends Sommet {
     
     private String firstName;
@@ -22,6 +27,17 @@ public class Utilisateur extends Sommet {
     }
     
     // OUTILS
+    
+    public void save(BufferedWriter bw) throws IOException {
+        bw.write(getName() + "," + firstName + "," + age + ":");
+        if (!getSuccessors().isEmpty()) {
+            List<Sommet> l = new ArrayList<Sommet>(getSuccessors());
+            bw.write(l.get(0).getName());
+            for (int i = 1; i < l.size(); ++i) {
+                bw.write(";" + l.get(i).getName());
+            }
+        }
+    }
     
     @Override
     public String toString() {
