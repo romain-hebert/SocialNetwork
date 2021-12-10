@@ -26,7 +26,7 @@ public class Utilisateur extends Sommet {
     @Override
     public String toString() {
         String str = "(U)" + getFirstName() + " " + getName()
-                + ", " + age + "ans";
+                + " " + age + "ans";
         if (!getSuccessors().isEmpty()) {
             str += ":";
             for (Sommet s : getSuccessors()) {

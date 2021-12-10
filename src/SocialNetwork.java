@@ -54,7 +54,6 @@ public class SocialNetwork {
         createController();
     }
     
-
     private void createModel() {
         model = new Graphe();
     }
@@ -334,6 +333,8 @@ public class SocialNetwork {
         });
     }
     
+    // Ouvre une boite de dialogue d'entrée ayant request comme titre et field 
+    //  comme message.
     private String textFieldDialog(String request, String field) {
         return (String) JOptionPane.showInputDialog(
                 mainFrame,
@@ -342,6 +343,7 @@ public class SocialNetwork {
                 JOptionPane.QUESTION_MESSAGE);
     }
     
+    // Affiche un message approprié à la requete selon son resultat
     private void requete(String request, boolean result) {
         if (!result) {
             requestTextArea.setText(request + ": Échec");

@@ -157,13 +157,9 @@ public class Graphe extends Observable {
     }
     
     private double pr(Sommet s) {
-        if (pageRank.get(s) != 1.) {
-            return pageRank.get(s);
-        }
-        
         double sum = 0;
         for (Sommet s2 : enteringNodes(s)) {
-            sum += pr(s2) / s2.getSuccessors().size();
+            sum += pageRank.get(s2) / s2.getSuccessors().size();
         }
         return 0.15 / getNodeNb() + 0.85 * sum;
     }
@@ -220,13 +216,20 @@ public class Graphe extends Observable {
     
     public boolean removeNode(Sommet s) {
         if (sommets.remove(s)) {
-            for (Sommet s1 : sommets) {
-                if (s1.getSuccessors().contains(s)) {
-                    try {
-                        s1.removeSuccessor(s);
-                    } catch (OperationNotSupportedException e) {
-                        
-                    }
+//            for (Sommet s1 : sommets) {
+//                if (s1.getSuccessors().contains(s)) {
+//                    try {
+//                        s1.removeSuccessor(s);
+//                    } catch (OperationNotSupportedException e) {
+//                        
+//                    }
+//                }
+//            }
+            for (Sommet s1 : enteringNodes(s)) {
+                try {
+                    s1.removeSuccessor(s);
+                } catch (OperationNotSupportedException e) {
+                  
                 }
             }
             
