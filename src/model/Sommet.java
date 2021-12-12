@@ -12,8 +12,11 @@ import util.Contract;
 public abstract class Sommet {
 
     private Set<Sommet> successors;
-    
     private final String name;
+    
+    public static final String NAME_PATTERN = "[^$:;]+";
+    public static final String SUCCESSORS_PATTERN = NAME_PATTERN + "(;" 
+            + NAME_PATTERN + ")*";
 
     public Sommet(String name) {
         Contract.checkCondition(name != null);

@@ -31,10 +31,8 @@ public class Graphe extends Observable {
     private static final int SHORTPATH_INIT = 10000000;
 
     //TODO
-    private static final String USER_PATTERN = "";
-    private static final String PAGE_PATTERN = "";
     private static final String LINE_PATTERN =
-            USER_PATTERN + "|" + PAGE_PATTERN;
+            Utilisateur.USER_PATTERN + "|" + Page.PAGE_PATTERN + "$";
     
     private Set<Sommet> sommets;
     private Map<Sommet, Double> pageRank;
@@ -95,6 +93,7 @@ public class Graphe extends Observable {
         return d;
     }
     
+    // Récupérer tous les arcs du graphe
     public Set<List<Sommet>> getArcs() {
         Set<List<Sommet>> arcs = new HashSet<List<Sommet>>();
         
@@ -110,6 +109,7 @@ public class Graphe extends Observable {
         return arcs;
     }
     
+    // Récupérer un sommet à partir de son nom
     public Sommet getNodeFromName(String name) {
         for (Sommet s : sommets) {
             if (s.getName().equals(name)) {
@@ -120,6 +120,7 @@ public class Graphe extends Observable {
         return null;
     }
     
+    // Le nombre d'utilisateurs et de pages
     public List<Integer> getNbUsersAndPages() {
         List<Integer> l = new ArrayList<Integer>(2);
         int ucmpt = 0;
@@ -136,6 +137,7 @@ public class Graphe extends Observable {
         return l;
     }
     
+    // L'age moyen des utilisateurs
     public int meanUserAge() {
         int sum = 0;
         int cmpt = 0;
@@ -148,6 +150,7 @@ public class Graphe extends Observable {
         return (int) Math.round((double) sum / cmpt);
     }
     
+    // Récupérer tous les administrateurs de pages
     public Set<Utilisateur> getAllAdmins() {
         Set<Utilisateur> adm = new HashSet<Utilisateur>();
         for (Sommet s : sommets) {
@@ -158,6 +161,7 @@ public class Graphe extends Observable {
         return adm;
     }
     
+    // Calcul du page rank
     public Map<Sommet, Double> computePageRank() {
         pageRank = new HashMap<Sommet, Double>();
         for (Sommet s : sommets) {
@@ -191,6 +195,8 @@ public class Graphe extends Observable {
         return en;
     }
     
+    // Calcul du plus court chemin depuis un sommet source vers tous les autres
+    //      sommets du graphe
     public Map<Sommet, Integer> shortestPath(Sommet s) {
         Map<Sommet, Integer> spMap = new HashMap<Sommet, Integer>();
         for (Sommet s1 : sommets) {
@@ -222,6 +228,7 @@ public class Graphe extends Observable {
     
     // COMMANDES
     
+    // Ajouter un sommet au graphe
     public boolean addNode(Sommet s) {
         if (sommets.add(s)) {
             setChanged();
@@ -231,6 +238,7 @@ public class Graphe extends Observable {
         return false;
     }
     
+    // Retirer un sommet du graphe
     public boolean removeNode(Sommet s) {
         if (sommets.remove(s)) {
             for (Sommet s1 : enteringNodes(s)) {
@@ -248,6 +256,7 @@ public class Graphe extends Observable {
         return false;
     }
     
+    // Ajouter un arc entre deux sommets
     public boolean addArc(Sommet s1, Sommet s2)
             throws OperationNotSupportedException {
         
@@ -261,6 +270,7 @@ public class Graphe extends Observable {
         return false;
     }
     
+    // Retirer un arc entre deux sommets
     public boolean removeArc(Sommet s1, Sommet s2)
             throws OperationNotSupportedException {
         
@@ -274,6 +284,7 @@ public class Graphe extends Observable {
         return false;
     }
     
+    // Sauvegarder le graphe dans un fichier
     public void save(File f) throws IOException {
         Contract.checkCondition(f != null);
         
@@ -293,6 +304,7 @@ public class Graphe extends Observable {
         }
     }
     
+    // Charger un graphe depuis un fichier
     public void load(File f) throws IOException, Exception {
         Contract.checkCondition(f != null);
         

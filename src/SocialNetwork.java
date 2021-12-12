@@ -1,5 +1,3 @@
-
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,7 +11,6 @@ import java.util.Observer;
 import javax.naming.OperationNotSupportedException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,8 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-
 import model.Graphe;
 import model.Page;
 import model.Sommet;
@@ -133,6 +128,12 @@ public class SocialNetwork {
                     r.add(pageRankButton);
                     r.add(shortestPathButton);
                     r.setBorder(BorderFactory.createTitledBorder("Algos"));
+                }
+                q.add(r);
+                // Autre
+                r = new JPanel(); {
+                    r.add(getAdminsButton);
+                    r.setBorder(BorderFactory.createTitledBorder("Autres"));
                 }
                 q.add(r);
             }
@@ -346,6 +347,15 @@ public class SocialNetwork {
             }
         });
         
+        getAdminsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Sommet s : model.getAllAdmins()) {
+                    requestTextArea.setText(s.toString());
+                }
+            }
+        });
+        
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -366,7 +376,6 @@ public class SocialNetwork {
         });
         
         loadButton.addActionListener(new ActionListener() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO

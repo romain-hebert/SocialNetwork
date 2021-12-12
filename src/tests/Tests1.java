@@ -1,8 +1,5 @@
 package tests;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import javax.naming.OperationNotSupportedException;
 
 import model.Graphe;
@@ -18,7 +15,7 @@ public class Tests1 {
         Page trololo = new Page("Trololo", hebert);
         Utilisateur marybrasse = new Utilisateur("Marybrasse", "Thomas", 22);
         Utilisateur marybrasse2 = new Utilisateur("Marybrasse", "Onch", 12);
-        Utilisateur selmi = new Utilisateur("Selmi", "Carla", 60);
+        Utilisateur selmi = new Utilisateur("Dupont", "Jean", 50);
 //        marybrasse.addSuccessor(hebert);
 //        marybrasse.addSuccessor(trololo);
         g.addNode(hebert);
