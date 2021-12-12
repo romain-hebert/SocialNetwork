@@ -16,7 +16,7 @@ public class Page extends Sommet {
     private Set<Utilisateur> admins;
     
     public static final String PAGE_PATTERN = NAME_PATTERN + ":"
-            + SUCCESSORS_PATTERN;
+            + SUCCESSORS_PATTERN + "$";
     
     public Page(String name, Utilisateur creator) {
         super(name);

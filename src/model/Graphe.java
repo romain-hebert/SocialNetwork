@@ -305,6 +305,7 @@ public class Graphe extends Observable {
     }
     
     // Charger un graphe depuis un fichier
+    // NON FONCTIONNELLE
     public void load(File f) throws IOException, Exception {
         Contract.checkCondition(f != null);
         
@@ -313,14 +314,27 @@ public class Graphe extends Observable {
         
         String line = br.readLine();
         while (line != null) {
-            Pattern p = Pattern.compile(LINE_PATTERN);
-            Matcher m = p.matcher(line);
-            if (!m.matches()) {
+            Pattern pu = Pattern.compile(Utilisateur.USER_PATTERN);
+            Pattern pp = Pattern.compile(Page.PAGE_PATTERN);
+            if (pu.matcher(line).matches()) {
+                String[] lr = line.split(",:;");
+                Utilisateur u = new Utilisateur(lr[0], lr[1],
+                        Integer.valueOf(lr[2]));
+                System.out.println("ouille");
+                addNode(u);
+            } else if (pp.matcher(line).matches()) {
+                String[] lr = line.split(",:;");
+                Utilisateur u = (Utilisateur) getNodeFromName(lr[1]);
+                Page p = new Page(lr[0], u);
+                addNode(p);
+            } else {
                 fr.close();
                 br.close();
+                System.out.println("aie");
                 throw new Exception();
             }
-            //TODO
+            
+            
         }
         
         if (br != null) {

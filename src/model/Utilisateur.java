@@ -8,7 +8,7 @@ import java.util.List;
 public class Utilisateur extends Sommet {
     
     public static final String USER_PATTERN = NAME_PATTERN + "," + NAME_PATTERN
-            + "," + "\\d+:" + SUCCESSORS_PATTERN;
+            + "," + "\\d+:" + SUCCESSORS_PATTERN + "*$";
     
     private String firstName;
     private int age;

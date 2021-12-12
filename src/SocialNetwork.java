@@ -76,6 +76,7 @@ public class SocialNetwork {
         getAdminsButton = new JButton("Administrateurs");
         saveButton = new JButton("Sauvegarder");
         loadButton = new JButton("Charger");
+        loadButton.setEnabled(false);
     }
     
     private void placeComponents() {
@@ -366,7 +367,7 @@ public class SocialNetwork {
                         == JFileChooser.APPROVE_OPTION) {
                     try {
                         model.save(fc.getSelectedFile());
-                    } catch (IOException e1) {
+                    } catch (IOException ex) {
                         result = false;
                     } finally {
                         requete(request, result);
@@ -374,11 +375,26 @@ public class SocialNetwork {
                 }
             }
         });
-        
+
+        // NON FONCTIONNELLE
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO
+                String request = "Charger";
+                boolean result = true;
+                JFileChooser fc = new JFileChooser();
+                if (fc.showOpenDialog(mainFrame)
+                        == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        model.load(fc.getSelectedFile());
+                    } catch (IOException ex) {
+                        result = false;
+                    } catch (Exception ex) {
+                        result = false;
+                    } finally {
+                        requete(request, result);
+                    }
+                }
             }
         });
     }
